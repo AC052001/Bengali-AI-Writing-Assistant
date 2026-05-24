@@ -1,378 +1,173 @@
-# Autonomous Multi-Agent Travel Orchestration System
+# Bengali Writing Assistant using BanglaT5 and BanglaBERT
 
-An intelligent AI-powered travel planning platform built using the Google ADK framework, designed to autonomously generate, refine, personalize, and optimize end-to-end travel itineraries through a hierarchical multi-agent architecture.
+## Overview
 
-The system combines:
-- Multi-Agent Collaboration
-- Persistent Vector Memory
-- Semantic Preference Retrieval
-- Real-Time API Grounding
-- Autonomous Planning & Refinement
+A complete NLP-powered Bengali Writing Assistant developed using transformer-based deep learning models such as BanglaT5 and BanglaBERT.
 
-to deliver highly personalized and context-aware travel experiences.
+The system performs:
+
+- Bengali grammar correction
+- Bengali spell correction
+- Automatic error detection
+- Linguistic error classification
+- REST API serving using FastAPI
+- Interactive web interface using Streamlit
+
+This project is designed for Bengali grammatical error modelling and intelligent Bengali writing assistance.
 
 ---
 
-# ✈️ Features
+# Features
 
-## 🧠 Hierarchical Multi-Agent Architecture
+- Transformer-based Bengali NLP pipeline
+- BanglaT5 for grammar correction
+- BanglaBERT for error detection and classification
+- Real-time correction suggestions
 
-The platform uses specialized AI agents coordinated through a central manager agent.
+---
 
-### Agent Roles
+# Tech Stack
 
-| Agent | Responsibility |
+| Component | Technology |
 |---|---|
-| Manager Agent | Coordinates workflow between all agents |
-| Ideation Agent | Generates destination and itinerary ideas |
-| Refinement Agent | Optimizes schedules, budgets, and logistics |
-| Memory Agent | Retrieves and stores user preferences using vector search |
+| Programming Language | Python |
+| Deep Learning | PyTorch |
+| NLP Models | BanglaT5, BanglaBERT |
 
 ---
 
-## 🗂 Persistent Cross-Session Memory
-
-Integrated with Qdrant vector database for long-term semantic memory.
-
-The system can remember:
-- Preferred destinations
-- Budget ranges
-- Food preferences
-- Transport choices
-- Hotel preferences
-- Previous trips
-- Travel constraints
-
-This enables:
-- Personalized recommendations
-- Context continuity across sessions
-- Adaptive itinerary optimization
-
----
-
-## 🌐 Real-Time API Grounding
-
-The system grounds AI-generated plans using live external APIs.
-
-### Supported Integrations
-
-- Flight APIs
-- Hotel APIs
-- Weather APIs
-
-This prevents hallucinated travel recommendations and ensures:
-- Real availability
-- Accurate pricing
-- Live weather
-- Travel feasibility
-
----
-
-## ⚡ Autonomous Travel Workflow
-
-The system can:
-- Generate trips from natural language prompts
-- Optimize itineraries automatically
-- Handle user constraints dynamically
-- Re-plan based on weather/budget/time
-- Maintain contextual memory
-- Coordinate multiple agents autonomously
-
----
-
-# 🏗 System Architecture
+# Project Architecture
 
 ```text
-                         ┌─────────────────────┐
-                         │      User Input      │
-                         └─────────┬───────────┘
-                                   │
-                                   ▼
-                     ┌─────────────────────────┐
-                     │     Manager Agent       │
-                     └─────────┬──────────────┘
-                               │
-         ┌─────────────────────┼─────────────────────┐
-         ▼                     ▼                     ▼
-┌────────────────┐   ┌────────────────┐   ┌────────────────┐
-│ Ideation Agent │   │ Refinement     │   │ Memory Agent   │
-│                │   │ Agent          │   │ (Qdrant DB)    │
-└────────────────┘   └────────────────┘   └────────────────┘
-         │                     │                     │
-         └─────────────────────┼─────────────────────┘
-                               ▼
-                  ┌────────────────────────┐
-                  │ External Tool/API Hub  │
-                  └────────────────────────┘
-                               │
-                               ▼
-                  ┌────────────────────────┐
-                  │ Final Travel Itinerary │
-                  └────────────────────────┘
+                        +-------------------+
+                        |   Streamlit UI    |
+                        +---------+---------+
+                                  |
+                                  v
+                        +-------------------+
+                        |    FastAPI API    |
+                        +---------+---------+
+                                  |
+       --------------------------------------------------------
+       |                        |                            |
+       v                        v                            v
++---------------+      +----------------+        +----------------------+
+| Spell Checker |      | Grammar Engine |        | Error Classification |
+| BanglaBERT    |      | BanglaT5       |        | BanglaBERT           |
++---------------+      +----------------+        +----------------------+
+                                  |
+                                  v
+                        +-------------------+
+                        | Corrected Output  |
+                        +-------------------+
 ```
 
 ---
 
-# 🧩 Tech Stack
 
-## Core AI Framework
-- Google ADK (Agent Development Kit)
+# Download Pretrained Models
 
-## LLM & AI
-- Gemini Models
-- Multi-Agent Orchestration
-- Tool Calling
-- Semantic Retrieval
+## BanglaT5
 
-## Vector Database
-- Qdrant
+```python
+from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 
-## Backend
-- Python
+tokenizer = AutoTokenizer.from_pretrained(
+    "csebuetnlp/banglat5"
+)
 
-## APIs & Tools
-- OpenWeather API
-- Flight Search APIs
-- Hotel APIs
-
-## Memory & Retrieval
-- Embedding Models
-- Vector Similarity Search
-- Persistent User Profiles
-
----
-
-# 🧠 Multi-Agent Workflow
-
-## Step 1 — User Query
-
-Example:
-
-```text
-Plan a 5-day budget-friendly trip to Japan with anime attractions and vegetarian food options.
+model = AutoModelForSeq2SeqLM.from_pretrained(
+    "csebuetnlp/banglat5"
+)
 ```
 
 ---
 
-## Step 2 — Manager Agent
+## BanglaBERT
 
-- Parses user intent
-- Assigns subtasks to specialized agents
-- Maintains orchestration pipeline
+```python
+from transformers import AutoTokenizer, AutoModelForSequenceClassification
 
----
+tokenizer = AutoTokenizer.from_pretrained(
+    "sagorsarker/bangla-bert-base"
+)
 
-## Step 3 — Ideation Agent
-
-Generates:
-- Candidate destinations
-- Attractions
-- Activities
-- Hotel categories
-- Travel schedules
-
----
-
-## Step 4 — Memory Agent
-
-Retrieves:
-- Previous preferences
-- Budget history
-- Saved destinations
-- User constraints
-
-Using:
-- Vector embeddings
-- Semantic similarity search
-
----
-
-## Step 5 — Refinement Agent
-
-Optimizes:
-- Route efficiency
-- Budget allocation
-- Time management
-- API-grounded feasibility
-
----
-
-## Step 6 — Tool/API Execution
-
-The system calls:
-- Weather APIs
-- Flight APIs
-- Hotel APIs
-
-to validate and ground itinerary data.
-
----
-
-## Step 7 — Final Optimized Itinerary
-
-Returns:
-- Day-wise travel plan
-- Budget estimate
-- Booking suggestions
-- Weather-aware scheduling
-- Personalized recommendations
-
----
-
-# 🧬 Qdrant Memory Pipeline
-
-```text
-User Preferences
-        │
-        ▼
-Embedding Generation
-        │
-        ▼
-Qdrant Vector Storage
-        │
-        ▼
-Semantic Similarity Search
-        │
-        ▼
-Context Retrieval for Agents
+model = AutoModelForSequenceClassification.from_pretrained(
+    "sagorsarker/bangla-bert-base"
+)
 ```
 
 ---
 
-# 📊 Example Prompt
+# Sample Input
 
-```text
-I prefer mountain destinations, vegetarian food, low-budget hotels,
-and historical places. Plan a 7-day trip in Europe.
+```json
+{
+    "text": "আমর বাংলা ভালোো লিখতে পারি"
+}
 ```
 
 ---
 
-# 📌 Example Output
+# Sample Output
 
-```text
-Day 1:
-- Arrival in Prague
-- Budget hotel check-in
-- Old Town exploration
+```json
+{
+    "original_text": "আমর বাংলা ভালোো লিখতে পারি",
 
-Day 2:
-- Prague Castle
-- Charles Bridge
-- Vegetarian Czech restaurants
+    "spell_corrected_text": "আমরা বাংলা ভালো লিখতে পারি",
 
-...
+    "grammar_corrected_text": "আমরা বাংলা ভালো লিখতে পারি",
 
-Estimated Budget:
-$1200
+    "detected_errors": [
+        {
+            "word": "আমর",
+            "issue": "Spelling Error"
+        }
+    ],
+
+    "classified_errors": [
+        {
+            "word": "আমর",
+            "type": "Spelling Mistake"
+        }
+    ]
+}
 ```
 
 ---
 
-# 🚀 Advanced Capabilities
+# Dataset Format
 
-## Adaptive Re-Planning
-
-The system can dynamically:
-- Re-route travel plans
-- Adjust budgets
-- Modify schedules
-- Handle weather disruptions
+| Incorrect Sentence | Correct Sentence |
+|---|---|
+| আমর বাংলা লিখি | আমরা বাংলা লিখি |
+| সে স্কুল যাইতেছে | সে স্কুল যাচ্ছে |
+| আমি ভালোো আছি | আমি ভালো আছি |
 
 ---
 
-## Semantic User Profiling
+# Future Improvements
 
-Learns:
-- User habits
-- Recurring interests
-- Destination patterns
-- Travel style
-
----
-
-## Autonomous Coordination
-
-Agents communicate through:
-- Shared memory
-- Tool execution
-- Task delegation
-- Context propagation
+- Context-aware Bengali correction
+- Bengali speech-to-text integration
+- OCR-based Bengali correction
+- Bengali essay evaluation
+- Browser extension
+- Mobile application support
+- Real-time typing assistance
+- Bengali semantic correction
 
 ---
 
-# 📈 Potential Extensions
+# Applications
 
-- Voice-based trip planning
-- Multilingual support
-- Reinforcement learning optimization
-- Booking automation
-- Mobile application deployment
-- Collaborative group trip planning
-- AI travel assistant chatbot
-
----
-
-# 🛡 Challenges Solved
-
-## Multi-Agent Coordination
-
-Implemented structured orchestration to avoid:
-- Agent conflicts
-- Redundant planning
-- Context fragmentation
+- Bengali educational platforms
+- Bengali typing assistant
+- Academic Bengali writing
+- Bengali content moderation
+- Bengali blogging platforms
+- Bengali proofreading systems
+- Government Bengali documentation
 
 ---
-
-## Long-Term Memory Persistence
-
-Solved stateless LLM limitations through:
-- Vector storage
-- Semantic retrieval
-- Persistent preference tracking
-
----
-
-## Hallucination Reduction
-
-Grounded reasoning using:
-- Real-time APIs
-- External tool calls
-- Constraint validation
-
----
-
-# 🎯 Use Cases
-
-- AI Travel Assistants
-- Smart Tourism Platforms
-- Enterprise Travel Automation
-- Personalized Vacation Planning
-- Corporate Trip Optimization
-- Autonomous Concierge Systems
-
----
-
-# 📚 Research & Engineering Concepts
-
-- Multi-Agent Systems
-- Agentic AI
-- Retrieval-Augmented Generation (RAG)
-- Vector Databases
-- Tool-Augmented LLMs
-- Semantic Search
-- Autonomous Planning
-- Memory-Augmented AI
-
----
-
-# ⭐ Future Scope
-
-- Fully autonomous booking
-- Real-time collaborative planning
-- Emotion-aware recommendations
-- Edge AI deployment
-- Wearable travel assistants
-- AR/VR travel previews
-
-```
